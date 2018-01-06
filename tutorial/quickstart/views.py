@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
+from .models import Song, Employee
 from rest_framework import viewsets
-from tutorial.quickstart.serializers import UserSerializer, GroupSerializer
+from tutorial.quickstart.serializers import UserSerializer, GroupSerializer, SongSerializer, EmployeeSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     """ 
@@ -15,3 +16,17 @@ class GroupViewSet(viewsets.ModelViewSet):
     """ 
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class SongViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows companies to be viewed or edited.
+    """
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+	
+class EmployeeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows companies to be viewed or edited.
+    """
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
