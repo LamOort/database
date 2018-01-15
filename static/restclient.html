@@ -1,0 +1,140 @@
+<script>
+var array;
+function process1()
+{
+	var request = new XMLHttpRequest();
+	request.open("GET", "http://localhost:8000/songs/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send();
+	array = JSON.parse(request.responseText);
+	var selection = document.getElementById("choice");
+	var i, option="";
+	for(i=0; i<array.length; i++){
+		option = option + "<option>" + array[i].name + "</option>";
+	}
+	selection.innerHTML = option;
+}
+function putSong(){
+	var updateName = document.getElementById("name");
+	var index = document.getElementById("choice").selectedIndex;
+	var request = new XMLHttpRequest();
+	var url=""+array[index].url;
+	var jsonData = '{"name":' + JSON.stringify(updateName.value) + '}';
+	request.open("PUT", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process1();
+}
+function postSong(){
+	var songName = document.getElementById("song");
+	var jsonData = '{"name":' + JSON.stringify(songName.value) + '}';
+	var request = new XMLHttpRequest();
+	request.open("POST", "http://localhost:8000/songs/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process1();
+}
+function deleteSong(){
+	var index = document.getElementById("choice").selectedIndex;
+	var request = new XMLHttpRequest();
+	var name = array[index].name;
+	var url =""+array[index].url;
+	var jsonData = '{"name":' + JSON.stringify(name) + '}';
+	request.open("DELETE", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process1();
+}
+ function process2()
+{
+	var request = new XMLHttpRequest();
+	request.open("GET", "http://localhost:8000/employees/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send();
+	array = JSON.parse(request.responseText);
+	var selection = document.getElementById("choice2");
+	var i, option="";
+	for(i=0; i<array.length; i++){
+		option = option + "<option>" + array[i].name + "</option>";
+	}
+	selection.innerHTML = option;
+}
+function putEmployee(){
+	var updateName = document.getElementById("nickname");
+	var index = document.getElementById("choice2").selectedIndex;
+	var request = new XMLHttpRequest();
+	var url=""+array[index].url;
+	var jsonData = '{"name":' + JSON.stringify(updateName.value) + '}';
+	request.open("PUT", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process2();
+}
+function postEmployee(){
+	var employeeName = document.getElementById("employee");
+	var jsonData = '{"name":' + JSON.stringify(employeeName.value) + '}';
+	var request = new XMLHttpRequest();
+	request.open("POST", "http://localhost:8000/employees/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process2();
+}
+function deleteEmployee(){
+	var index = document.getElementById("choice2").selectedIndex;
+	var request = new XMLHttpRequest();
+	var name = array[index].name;
+	var url =""+array[index].url;
+	var jsonData = '{"name":' + JSON.stringify(name) + '}';
+	request.open("DELETE", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(jsonData); 
+	process2();
+}
+function readCookie(name) {
+ var nameEQ = encodeURIComponent(name) + "=";
+ var ca = document.cookie.split(';');
+ for (var i = 0; i < ca.length; i++) {
+ var c = ca[i];
+ while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+ if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+ }
+ return null;
+}
+</script>
+<body>
+Song name:<br>
+<input type="text" id="song"><button onClick="postSong()">Add song</button>
+<br>
+<p>Song selection</p>
+<select id="choice"></select>
+<button onclick="deleteSong()">Delete song</button>
+<br>
+Edit song name:<br>
+<input type="text" id="name"><button onClick="putSong()">Edit song</button>
+<br>
+Employee name:<br>
+<input type="text" id="employee"><button onClick="postEmployee()">Add employee</button>
+<br>
+<p>Employee selection</p>
+<select id="choice2"></select>
+<button onclick="deleteEmployee()">Delete employee</button>
+<br>
+Edit employee's name:<br>
+<input type="text" id="name"><button onClick="putEmployee()">Edit employee</button>
+</body>
